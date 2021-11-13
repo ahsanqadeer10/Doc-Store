@@ -15,7 +15,7 @@ def index(request):
       api_urls = {
             'Folders': 'folders/?created=<asc, dsc>&updated=<asc, dsc>&topic=<topic_id_1,topic_id_2,...>',
             'Folder Detail': 'folder-detail/<int:folder_id>/',
-            'Folder Documents': 'folder-documents/<int:folder_id>/',
+            'Folder Documents': 'folder-documents/<int:folder_id>/?created=<asc, dsc>&updated=<asc, dsc>&topic=<topic_id_1,topic_id_2,...>',
             'Folder Create': 'folder-create/',
             'Folder Update': 'folder-update/<int:folder_id>/',
             'Folder Delete': 'folder-delete/<int:folder_id>/',
@@ -70,6 +70,25 @@ def folderDetail(request, folder_id):
 @api_view(["GET"])
 def folderDocuments(request, folder_id):
       documents = Document.objects.filter(folder = folder_id)
+
+     # Sorting and filtering dataset according to query parameters
+      param_created = request.GET.get('created')
+      param_updated = request.GET.get('updated')      
+      param_topic = request.GET.get('topic')
+      if param_created:
+            if param_created == "asc":
+                  documents = documents.order_by('created_at')
+            elif param_created == "dsc":
+                  documents = documents.order_by('-created_at')
+      if param_updated:
+            if param_updated == "asc":
+                  documents = documents.order_by('updated_at')
+            elif param_updated == "dsc":
+                  documents = documents.order_by('-updated_at')
+      if param_topic:
+            param_topic = param_topic.split(",")
+            documents = documents.filter(topic__in=param_topic).distinct()
+ 
       serializer = DocumentSerializer(documents, many=True)
       return Response(serializer.data)
 
