@@ -10,6 +10,7 @@ from .serializers import FolderSerializer, DocumentSerializer, TopicSerializer
 
 # Create your views here.
 
+# Index returns all API URLs
 @api_view(["GET"])
 def index(request):
       api_urls = {
