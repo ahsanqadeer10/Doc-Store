@@ -35,6 +35,7 @@ ALLOWED_HOSTS = ['0.0.0.0', 'localhost', '127.0.0.1', 'shared-document-store.her
 INSTALLED_APPS = [
     'docstore',
     'rest_framework',
+    'whitenoise.runserver_nostatic',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -83,8 +84,8 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'docstore', 
         'USER': 'postgres', 
-        'PASSWORD': 'Infinity10',
-        'HOST': '127.0.0.1', 
+        'PASSWORD': 'postgres-pass',
+        'HOST': 'localhost', 
         'PORT': '5432',
     }
 }
